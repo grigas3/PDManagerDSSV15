@@ -12,7 +12,7 @@ namespace PDManager.Common.Interfaces
         /// <summary>
         /// Get Alert Inputs
         /// </summary>
-        /// <returns></returns>
+        /// <returns>List of Alert Inputs <see cref="IAlertInput"/> </returns>
         IEnumerable<IAlertInput> GetAlertInputs();
     }
 }

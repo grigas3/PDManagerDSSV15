@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace PDManager.Models
+namespace PDManager.Common.Models
 {
     /// <summary>
     /// Clinical Information stored in the Patient ClinicalInfo Entry

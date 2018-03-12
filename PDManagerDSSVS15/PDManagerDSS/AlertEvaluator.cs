@@ -2,12 +2,9 @@
 using PDManager.Common.Extensions;
 using PDManager.Common.Interfaces;
 using PDManager.Common.Models;
-using PDManager.Models;
 using System;
-using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 namespace PDManager.DSS
 {
@@ -26,11 +23,11 @@ namespace PDManager.DSS
         /// <summary>
         /// Alert Evaluator
         /// </summary>
-        /// <param name="dssRunner"></param>
-        /// <param name="aggregator"></param>
-        /// <param name="dataProxy"></param>
-        /// <param name="aggrDefinitionProvider"></param>
-        /// <param name="dSSDefinitionProvider"></param>
+        /// <param name="dssRunner">DSSRunner</param>
+        /// <param name="aggregator">Aggregator</param>
+        /// <param name="dataProxy">Data proxy</param>
+        /// <param name="aggrDefinitionProvider">Aggregation Definition Provider</param>
+        /// <param name="dSSDefinitionProvider">DSS definition Provider</param>
         public AlertEvaluator(IDSSRunner dssRunner, IAggregator aggregator,IDataProxy dataProxy, IAggrDefinitionProvider aggrDefinitionProvider, IDSSDefinitionProvider dSSDefinitionProvider)
         {
             this._dssRunner = dssRunner;
@@ -44,9 +41,9 @@ namespace PDManager.DSS
         /// <summary>
         /// Apply Filter for numeric values
         /// </summary>
-        /// <param name="alert"></param>
-        /// <param name="value"></param>
-        /// <returns></returns>
+        /// <param name="alert">Alert Input</param>
+        /// <param name="value">Numeric Value</param>
+        /// <returns>AlertLevel</returns>
         private AlertLevel ApplyFilter(IAlertInput alert, double value)
         {
 
@@ -61,9 +58,9 @@ namespace PDManager.DSS
         /// <summary>
         /// Apply Filter for numeric values
         /// </summary>
-        /// <param name="alert"></param>
-        /// <param name="value"></param>
-        /// <returns></returns>
+        /// <param name="alert">Alert input</param>
+        /// <param name="value">Categorical Value</param>
+        /// <returns>AlertLevel</returns>
         private AlertLevel ApplyFilter(IAlertInput alert, string value)
         {
 
@@ -83,9 +80,9 @@ namespace PDManager.DSS
         /// <summary>
         /// Get Alert Level
         /// </summary>
-        /// <param name="alert"></param>
-        /// <param name="patientId"></param>
-        /// <returns></returns>
+        /// <param name="alert">Alert Input</param>
+        /// <param name="patientId">Patient Id</param>
+        /// <returns>0: No Alert, 1: Low Priority Alert, 2: Medium Priority Alert, 3: High Priority Alert</returns>
         public async Task<AlertLevel> GetAlertLevel(IAlertInput alert,string patientId)
         {
             

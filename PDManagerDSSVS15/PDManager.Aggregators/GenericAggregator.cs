@@ -1,6 +1,6 @@
 ﻿using PDManager.Common.Exceptions;
 using PDManager.Common.Interfaces;
-using PDManager.Models;
+using PDManager.Common.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,7 +11,8 @@ namespace PDManager.Aggregators
 {
 
     /// <summary>
-    /// UPDRS Score Aggregator
+    /// Generic PDManager Aggregator
+    /// Aggregators are defined by specific code restored from IAggrDefinitionProvider <see cref="IAggrDefinitionProvider"/>
     /// </summary>
     public class GenericAggregator : IAggregator
     {
@@ -53,8 +54,8 @@ namespace PDManager.Aggregators
         ///  Constructor
         /// </summary>
         /// <param name="proxy">Data proxy</param>
-        /// <param name="logger"></param>
-        /// <param name="aggrDefinitionDictionary"></param>
+        /// <param name="logger">Logger</param>
+        /// <param name="aggrDefinitionDictionary">Aggregation Definition Dictionary</param>
         public GenericAggregator(IDataProxy proxy,IGenericLogger logger, IAggrDefinitionProvider aggrDefinitionDictionary)
         {
             this._proxy = proxy;
@@ -96,10 +97,10 @@ namespace PDManager.Aggregators
         /// </summary>
         /// <param name="patientId">Patient Id</param>
         /// <param name="code">Meta observation Code</param>
-        /// <param name="lastExecutionTime"></param>
+        /// <param name="lastExecutionTime">Last execution time</param>
         /// <param name="aggregationType">Overrides the default aggregation type</param>
         /// <param name="filterType">Overrides the default filter type</param>
-        /// <returns></returns>
+        /// <returns>List of observations</returns>
 
         public async Task<IEnumerable<IObservation>> Run(string patientId, string code, DateTime? lastExecutionTime,string aggregationType=null,string filterType=null)
         {
@@ -175,7 +176,7 @@ namespace PDManager.Aggregators
         /// <param name="patientId">Patient Id</param>
         /// <param name="timestamp">Timestamp</param>
         /// <param name="observations">Observations</param>
-        /// <returns></returns>
+        /// <returns>List of observations</returns>
         private IEnumerable<IObservation> PerformAggregation(AggrConfig definition, string patientId, long timestamp, IEnumerable<PDObservation> observations)
         {
 
@@ -235,8 +236,8 @@ namespace PDManager.Aggregators
         /// <param name="definition">Aggregation definition</param>
         /// <param name="patientId">Patient Id</param>
         /// <param name="timestamp">Timestamp</param>
-        /// <param name="observations">Observations</param>
-        /// <returns></returns>
+        /// <param name="observations">Input Observations</param>
+        /// <returns>List of output observations</returns>
         private IEnumerable<IObservation> PerformTotalAggregation(AggrConfig definition,string patientId,long timestamp,IEnumerable<PDObservation> observations)
         {
                    
@@ -293,11 +294,16 @@ namespace PDManager.Aggregators
             return metaObservations;
           
         }
-        private void Thresholding(AggrConfig definition, IEnumerable<IObservation> metaObservations)
+        /// <summary>
+        /// Threshold phase
+        /// </summary>
+        /// <param name="definition">Aggregation Definition</param>
+        /// <param name="observations">Observations</param>
+        private void Thresholding(AggrConfig definition, IEnumerable<IObservation> observations)
         {
-            var mean = metaObservations.Select(e => e.Value).DefaultIfEmpty(0).Average();
-            var q2 = metaObservations.Select(e => e.Value * e.Value).DefaultIfEmpty(0).Average();
-            int n = metaObservations.Count();
+            var mean = observations.Select(e => e.Value).DefaultIfEmpty(0).Average();
+            var q2 = observations.Select(e => e.Value * e.Value).DefaultIfEmpty(0).Average();
+            int n = observations.Count();
             var std = q2 / n - mean * mean;
 
            
@@ -317,7 +323,7 @@ namespace PDManager.Aggregators
                 }
 
                 //New observation timestamp
-                foreach (var obs in metaObservations)
+                foreach (var obs in observations)
                 {
 
 
@@ -333,8 +339,8 @@ namespace PDManager.Aggregators
         /// <param name="definition">Aggregation Definition</param>
         /// <param name="patientId">Patient Id</param>
         /// <param name="metaObservations">Observations</param>
-        /// <returns></returns>
-            private IEnumerable<IObservation> MetaAggregation(AggrConfig definition, string patientId, IEnumerable<IObservation> metaObservations)
+        /// <returns>List of observations</returns>
+        private IEnumerable<IObservation> MetaAggregation(AggrConfig definition, string patientId, IEnumerable<IObservation> metaObservations)
         {
            
 
@@ -410,7 +416,7 @@ namespace PDManager.Aggregators
         /// <param name="definition">Aggregation Definition</param>
         /// <param name="patientId">Patient Id</param>
         /// <param name="observations">Observations</param>
-        /// <returns></returns>
+        /// <returns>List of observations</returns>
         private IEnumerable<IObservation> PerformTimeAggregation(AggrConfig definition,  string patientId, IEnumerable<PDObservation> observations)
         {
 

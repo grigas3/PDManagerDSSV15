@@ -14,7 +14,15 @@ namespace PDManager.Aggregators
     /// Aggregation Config Definition
     /// Meta Observations come from complex aggregation of basic observations
     /// An example is the OFF time which comes from the total UPDRS score
-    /// <example>{"AggregationType":"time","Variables":[{"Uri":"api/observations","Code":"STBRADS30","Weight":1.0},{"Uri":"api/observations","Code":"STDYS30","Weight":-1.0}],"Beta":0.0}</example>
+    /// <example>
+    /// {
+    /// "AggregationType":"time",
+    /// "Variables":[
+    ///     {"Uri":"api/observations","Code":"STBRADS30","Weight":1.0},
+    ///     {"Uri":"api/observations","Code":"STDYS30","Weight":-1.0}
+    ///     ],
+    ///     "Beta":0.0
+    ///     }</example>
     /// </summary>
     public class AggrConfig
     {
@@ -68,11 +76,10 @@ namespace PDManager.Aggregators
         [JsonRequired]
         public List<AggrVariable> Variables { get; set; }
         /// <summary>
-        /// Beta
+        /// Beta. Linear Aggregation is a linear regression of the form A*X+B where X the input variables. The Beta property corresponse to the B of the linear regression function
         /// </summary>
-
+        [Browsable(false)]
         [Description("Linear Aggregation is a linear regression of the form A*X+B where X the input variables. The Beta property corresponse to the B of the linear regression function")]
-
         public double Beta { get;  set; }
 
         /// <summary>
@@ -89,19 +96,18 @@ namespace PDManager.Aggregators
         /// Thresholds get be 
         /// "fixed" where a static threshold is used
         /// "std" the Threshold is ThresholdValue x STD
-        /// 
         /// </summary>
         [Description("Threshold type applied on filter step of aggregation")]
 
         public string ThresholdType { get; set; }
 
         /// <summary>
-        /// Threshold
+        /// Threshold. Use a thresholding in filter step.
         /// </summary>
         [Description("Use a thresholding in filter step.")]
         public bool Threshold { get; set; }
         /// <summary>
-        /// Code
+        /// Aggregated observation code
         /// </summary>
         [Description("Aggregated observation code")]
         [JsonRequired]
@@ -109,7 +115,7 @@ namespace PDManager.Aggregators
 
 
         /// <summary>
-        /// Name
+        /// Name of the aggregation variable
         /// </summary>
         [Description("Name of the aggregation variable")]
         [JsonRequired]
@@ -122,7 +128,7 @@ namespace PDManager.Aggregators
 
 
         /// <summary>
-        /// Version
+        /// Version of the aggregation definition
         /// </summary>
         [Description("Version of the aggregation definition")]
         [JsonRequired]
@@ -132,8 +138,8 @@ namespace PDManager.Aggregators
         /// <summary>
         /// Save Aggregation Definition to file
         /// </summary>
-        /// <param name="definition"></param>
-        /// <param name="file"></param>
+        /// <param name="definition">Aggregation Definition Model <see cref="AggrConfig"/></param>
+        /// <param name="file">File to save the definition</param>
         public static void SaveToFile(AggrConfig definition,string file)
         {
 
@@ -165,8 +171,8 @@ namespace PDManager.Aggregators
         /// <summary>
         /// Load Aggregation Definition from file
         /// </summary>
-        /// <param name="file"></param>
-        /// <returns></returns>
+        /// <param name="file">Input file</param>
+        /// <returns>Aggregation Configuration Model <see cref="AggrConfig"/> </returns>
         public static AggrConfig LoadFromFile(string file)
         {
             AggrConfig ret = null;
@@ -198,7 +204,7 @@ namespace PDManager.Aggregators
         /// <summary>
         /// To String
         /// </summary>
-        /// <returns></returns>
+        /// <returns>Json Serialized Object</returns>
         public override string ToString()
         {            
             return JsonConvert.SerializeObject(this);
@@ -209,7 +215,7 @@ namespace PDManager.Aggregators
         /// Create Aggregation Definition from string
         /// </summary>
         /// <param name="configJson">Config in json</param>
-        /// <returns></returns>
+        /// <returns>Aggregation Configuration Model <see cref="AggrConfig"/></returns>
         public static AggrConfig FromString(string configJson)
         {
             AggrConfig ret = null;            
@@ -230,9 +236,9 @@ namespace PDManager.Aggregators
 
         //TODO: Probably Remove Source
         /// <summary>
-        /// Source of Variable. The source can be 1) observation and 2) clinical
+        /// Source of Variable. The source can be 1) observation and 2) clinical 
         /// </summary>
-        [Description("Source of the variable the source can be 1) observation and 2) clinical")]
+        [Description("Source of the variable the source can be 1) observation and  2) clinical")]
         [JsonRequired]
         public string Source { get; set; }
         /// <summary>

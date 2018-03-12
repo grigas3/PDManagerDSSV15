@@ -14,7 +14,7 @@ namespace PDManager.Common.Extensions
         /// C# DateTime to Java
         /// </summary>
         /// <param name="dateTime">C# DateTime</param>
-        /// <returns></returns>
+        /// <returns>Long timestamp</returns>
         public static long ToUnixTimestamp(this DateTime dateTime)
         {
             return (long)(TimeZoneInfo.ConvertTimeToUtc(dateTime) -
@@ -24,7 +24,7 @@ namespace PDManager.Common.Extensions
         /// C# DateTime to Java
         /// </summary>
         /// <param name="dateTime">C# DateTime</param>
-        /// <returns></returns>
+        /// <returns>Long timestamp</returns>
         public static long ToUnixTimestampMilli(this DateTime dateTime)
         {
             return (long)(TimeZoneInfo.ConvertTimeToUtc(dateTime) -

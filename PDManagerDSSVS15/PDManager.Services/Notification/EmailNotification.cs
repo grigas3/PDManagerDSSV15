@@ -5,7 +5,7 @@ using System.Net.Mail;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace PDManager.Service.Notification
+namespace PDManager.Services.Notification
 {
     /// <summary>
     /// A Email Notification implementation

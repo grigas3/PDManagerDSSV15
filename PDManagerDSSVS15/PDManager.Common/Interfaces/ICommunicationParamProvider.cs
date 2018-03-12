@@ -13,7 +13,7 @@ namespace PDManager.Common.Interfaces
         /// <summary>
         /// Get Parameters
         /// </summary>
-        /// <returns></returns>
+        /// <returns>CommunicationParameters</returns>
         CommunicationParameters GetParameters();
     }
 }

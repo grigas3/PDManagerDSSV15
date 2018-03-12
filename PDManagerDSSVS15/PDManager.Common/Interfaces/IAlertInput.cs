@@ -84,7 +84,7 @@ namespace PDManager.Common.Interfaces
         /// </summary>
          bool TargetValueNumeric { get;}
         /// <summary>
-        /// 
+        /// Aggregation period Days for the DSS aggregation
         /// </summary>
         int AggregationPeriodDays { get; set; }
     }

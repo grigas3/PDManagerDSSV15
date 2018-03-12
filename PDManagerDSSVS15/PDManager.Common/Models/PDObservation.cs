@@ -1,7 +1,7 @@
 ﻿using PDManager.Common.Interfaces;
 using System.Collections.Generic;
 
-namespace PDManager.Models
+namespace PDManager.Common.Models
 {
     /// <summary>
     /// PD_Manager Observation

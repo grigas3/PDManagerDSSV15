@@ -1,13 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace PDManager.Common.Interfaces
+﻿namespace PDManager.Common.Interfaces
 {
 
     /// <summary>
     /// PDManager Common Interfaces
     /// </summary>
+    [System.Runtime.CompilerServices.CompilerGenerated]
     public class NamespaceDoc
     {
     }

@@ -14,7 +14,7 @@ namespace PDManager.Common.Interfaces
         /// Run (used for testing) with a dictionary of values
         /// </summary>
         /// <param name="configJson">DSS Config in Json format</param>
-        /// <param name="values"></param>
+        /// <param name="values">Dictionary of DSS input values</param>
         /// <returns>List of DSS Values</returns>
         IEnumerable<DSSValue> Run(string configJson, Dictionary<string, string> values);
         /// <summary>

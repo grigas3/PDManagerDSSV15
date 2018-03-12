@@ -15,8 +15,8 @@ namespace PDManager.Common.Interfaces
         /// <summary>
         /// Log Error
         /// </summary>
-        /// <param name="ex"></param>
-        /// <param name="message"></param>
+        /// <param name="ex">Exception</param>
+        /// <param name="message">Additional message</param>
         void LogError(Exception ex, string message);
     }
 }

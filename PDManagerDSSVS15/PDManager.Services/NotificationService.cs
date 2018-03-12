@@ -1,6 +1,6 @@
 ﻿using PDManager.Common.Interfaces;
 using PDManager.Common.Models;
-using PDManager.Service.Notification;
+using PDManager.Services.Notification;
 
 namespace PDManager.Services
 {
@@ -28,17 +28,17 @@ namespace PDManager.Services
         /// <summary>
         /// Send Message
         /// </summary>
-        /// <param name="message"></param>
+        /// <param name="message">Message parameter</param>
         public void SendMessage(IPDMessage message)
         {
          
             switch(message.MessageType)
             {
 
-                case PDMessageType.EMAIL:SendEmail(message);break;
-                case PDMessageType.SMS: SendSMS(message); break;
-                case PDMessageType.GCM: SendGCM(message); break;
-                case PDMessageType.FCM: SendFCM(message); break;
+                case MessageType.EMAIL:SendEmail(message);break;
+                case MessageType.SMS: SendSMS(message); break;
+                case MessageType.GCM: SendGCM(message); break;
+                case MessageType.FCM: SendFCM(message); break;
                 default:break;
 
             }

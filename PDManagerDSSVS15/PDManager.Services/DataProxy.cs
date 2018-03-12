@@ -1,8 +1,6 @@
 ﻿using Newtonsoft.Json;
 using PDManager.Common.Interfaces;
 using PDManager.Common.Models;
-using PDManager.Common.Results;
-using PDManager.Models;
 using System;
 using System.Collections.Generic;
 using System.Net.Http;
@@ -34,7 +32,7 @@ namespace PDManager.Services
         /// <summary>
         /// Constructor
         /// </summary>
-        /// <param name="credientialsProvider"></param>
+        /// <param name="credientialsProvider">Credential Provider <see cref="IProxyCredientialsProvider"/> </param>
         public DataProxy(IProxyCredientialsProvider credientialsProvider)
         {
 
@@ -142,23 +140,21 @@ namespace PDManager.Services
 
     
         /// <summary>
-        /// Get Async
+        /// Get Async. This method is PDManager API specific. This could be further generalized in order to be suitable for 3rd party rest APIs.
         /// </summary>
-        /// <typeparam name="T"></typeparam>
+        /// <typeparam name="T">Class of return object</typeparam>
             
-        /// <param name="take"></param>
-        /// <param name="skip"></param>
-        /// <param name="filter"></param>
-        /// <param name="sort"></param>
-        /// <param name="sortdir"></param>
-        /// <param name="lastmodified"></param>
-        /// <returns></returns>
+        /// <param name="take">Take</param>
+        /// <param name="skip">Skip</param>
+        /// <param name="filter">Filter. Filter is defined per url in PDManager API</param>
+        /// <param name="sort">Sort field</param>
+        /// <param name="sortdir">Sort direction</param>
+        /// <param name="lastmodified">Last modified</param>
+        /// <returns>List of T objects</returns>
         public async Task<IEnumerable<T>> Get<T>(int take, int skip, string filter, string sort, string sortdir = "false", long lastmodified = -1) where T : class
         {
-
-
-            var uri = GetBaseUri<T>();
             
+            var uri = GetBaseUri<T>();            
             //First Get Access token
             var    accessToken = await GetAccessToken();
             HttpClient client = new HttpClient
@@ -198,10 +194,10 @@ namespace PDManager.Services
         /// <summary>
         /// Get A single Item
         /// </summary>
-        /// <typeparam name="T"></typeparam>     
-        /// <param name="id"></param>
-        
-        /// <returns></returns>
+        /// <typeparam name="T">Class of return object</typeparam>     
+        /// <param name="id">id of object</param>
+
+        /// <returns>A T item with id</returns>
         public async Task<T> Get<T>(string id) where T : class
         {
             var uri = GetBaseUri<T>();

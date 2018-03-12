@@ -35,7 +35,7 @@ namespace PDManager.Common.Models
         /// <summary>
         /// Message Type
         /// </summary>
-        public PDMessageType MessageType { get; set; }
+        public MessageType MessageType { get; set; }
 
 
         /// <summary>

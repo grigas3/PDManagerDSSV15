@@ -14,16 +14,17 @@ namespace PDManager.Common.Interfaces
 
         /// <summary>
         /// Get Patient Ids
+        /// The method supports take and skip in order to take and handle patients from a large repository
         /// </summary>
-        /// <param name="take"></param>
-        /// <param name="skip"></param>
-        /// <returns></returns>
+        /// <param name="take">Take from list</param>
+        /// <param name="skip">Skip from list</param>
+        /// <returns>List of Patient Ids as string</returns>
         IEnumerable<string> GetPatientIds(int take = 0, int skip = 0);
         /// <summary>
         /// Get Patient Contacts
         /// </summary>
         /// <param name="patId">Patient Id</param>
-        /// <returns></returns>
+        /// <returns>List of Notification Contact <see cref="NotificationContact"/> </returns>
         IEnumerable<NotificationContact> GetPatientContacts(string patId);
     }
 }

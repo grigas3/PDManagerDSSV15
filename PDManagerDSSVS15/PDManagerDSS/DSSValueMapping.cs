@@ -85,8 +85,8 @@ namespace PDManager.DSS
         /// <summary>
         /// Cet DEXI Category
         /// </summary>
-        /// <param name="cat"></param>
-        /// <returns></returns>
+        /// <param name="cat">Category</param>
+        /// <returns>Output Value</returns>
         public int? GetCategoryMapping(string cat)
         {
             return CategoryMapping.FirstOrDefault(e => e.Name == cat)?.Value;// g[value];
@@ -95,8 +95,8 @@ namespace PDManager.DSS
         /// <summary>
         /// Get Numeric Mapping
         /// </summary>
-        /// <param name="value"></param>
-        /// <returns></returns>
+        /// <param name="value">Input Value</param>
+        /// <returns>Output Value</returns>
         public int GetNumericMapping(double value)
         {
             double cvalue = value;

@@ -6,7 +6,7 @@ using System.Net;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace PDManager.Service.Notification
+namespace PDManager.Services.Notification
 {
 
     /// <summary>
@@ -24,7 +24,7 @@ namespace PDManager.Service.Notification
         /// <param name="message">Message</param>
         /// <param name="appID">Application ID (from Google)</param>
         /// <param name="senderID">Sender ID (from Google)</param>
-        /// <returns></returns>
+        /// <returns>Result</returns>
         public static string Notify(string regId, string patientId,string message,string appID, string senderID)
         {
 

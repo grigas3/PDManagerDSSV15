@@ -4,7 +4,7 @@ namespace PDManager.Common.Models
     /// <summary>
     /// Message Type enum
     /// </summary>
-    public enum PDMessageType
+    public enum MessageType
     {
         /// <summary>
         /// SMS Notification

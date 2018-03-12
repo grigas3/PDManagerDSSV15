@@ -17,8 +17,8 @@ namespace PDManager.Common.Interfaces
         /// <param name="patientId">Patient Id</param>
         /// <param name="code">Meta Observation Code</param>
         /// <param name="lastExecutionTime">Last Execution time</param>
-        /// <param name="aggregationType"></param>
-        /// <param name="filterType"></param>
+        /// <param name="aggregationType">Aggregation Type. Overrides the default aggregation type</param>
+        /// <param name="filterType">Overrides the default filter type</param>
         /// <returns>List of observations</returns>
         Task<IEnumerable<IObservation>> Run(string patientId, string code, DateTime? lastExecutionTime,string aggregationType= null, string filterType = null);
 

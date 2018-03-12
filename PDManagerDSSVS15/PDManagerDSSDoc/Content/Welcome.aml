@@ -1,0 +1,350 @@
+<?xml version="1.0" encoding="utf-8"?>
+<topic id="035dda2b-d050-489a-8643-05fd248539f4" revisionNumber="1">
+	<developerConceptualDocument xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5" xmlns:xlink="http://www.w3.org/1999/xlink">
+		<introduction>
+			<para>The PD_manager DSS is based on the methods developed and validated within Task 5.2. It is based on a backend engine that can also be used as stand alone. In this section initially the technologies adopted for the implementation of the DSS engine are presented. Then the engine components and their interactions are described. </para>
+		</introduction>
+
+		<!--<section>
+			<titleIntroduction</title>
+			<content>
+				<para>
+          
+
+          <list class="bullet">
+					<listItem>
+						<para><localUri>ContentLayout.content</localUri> - Use the content layout file to manage the
+conceptual content in the project and define its layout in the table of contents.</para>
+					</listItem>
+
+					<listItem>
+						<para>The <localUri>.\media</localUri> folder - Place images in this folder that you will reference
+from conceptual content using <codeInline>medialLink</codeInline> or <codeInline>mediaLinkInline</codeInline>
+elements.  If you will not have any images in the file, you may remove this folder.</para>
+					</listItem>
+
+					<listItem>
+						<para>The <localUri>.\icons</localUri> folder - This contains a default logo for the help file.  You
+may replace it or remove it and the folder if not wanted.  If removed or if you change the file name, update
+the <ui>Transform Args</ui> project properties page by removing or changing the filename in the
+<codeInline>logoFile</codeInline> transform argument.  Note that unlike images referenced from conceptual topics,
+the logo file should have its <legacyBold>BuildAction</legacyBold> property set to <codeInline>Content</codeInline>.</para>
+					</listItem>
+
+					<listItem>
+						<para>The <localUri>.\Content</localUri> folder - Use this to store your conceptual topics.  You may
+name the files and organize them however you like.  One suggestion is to lay the files out on disk as you have
+them in the content layout file as shown in this project but the choice is yours.  Files can be added via the
+Solution Explorer or from within the content layout file editor.  Files must appear in the content layout file
+in order to be compiled into the help file.</para>
+					</listItem>
+				</list>
+
+				<para>See the <legacyBold>Conceptual Content</legacyBold> topics in the Sandcastle Help File Builder's
+help file for more information.  See the <legacyBold> Sandcastle MAML Guide</legacyBold> for details on Microsoft
+Assistance Markup Language (MAML) which is used to create these topics.</para>
+			</content>
+		</section>-->
+
+
+    <section>
+      <title>PDManager DSS</title>
+      <content>
+        <para>
+
+          This is a test web site in ASP .NET Core in order to test DSS and Aggregation functionalities.
+          Technologies used to develop this site:
+        </para>
+
+        <list class="bullet">
+          <listItem>
+            <para> [ASP.NET Core](https://get.asp.net/)</para>
+          </listItem>
+          <listItem>
+            <para>
+              [C# for a cross-platform server-side code](https://msdn.microsoft.com/en-us/library/67ef8sbd.aspx)
+            </para>
+          </listItem>
+          <listItem>
+            <para>
+              [Typescript TypeScript for client-side code](https://angular.io/)
+            </para>
+          </listItem>
+          <listItem>
+            <para>
+              [Webpack for building and bundling client-side resources](https://webpack.github.io/)
+            </para>
+          </listItem>
+          <listItem>
+            <para>
+              [Bootstrap](http://getbootstrap.com/) for layout and styling
+            </para>
+          </listItem>
+          <listItem>
+            <para>
+              [Json.Net](https://www.newtonsoft.com/json) Popular high-performance JSON framework for .NET
+            </para>
+          </listItem>
+          <listItem>
+            <para>
+              [HangFire](https://www.hangfire.io/) An easy way to perform background processing in .NET and .NET Core applications. No
+            </para>
+          </listItem>
+          <listItem>
+            <para>
+              [Swagger](https://swagger.io/). Swagger is the world’s largest framework of API developer tools for the OpenAPI Specification(OAS), enabling development across the entire API lifecycle, from design and documentation, to test and deployment.Windows Service or separate process required. The [Swashbuckle.AspNetCore]|(https://github.com/domaindrivendev/Swashbuckle.AspNetCore) implementation is used for ASP.NET Core.
+            </para>
+          </listItem>
+        </list>
+     
+      </content>
+    </section>
+    <section>
+    <title>The PDManager DSS architecture</title>
+    <content>
+      <para>
+        The following figure depicts the UML component diagram of the PDManager DSS
+        [![N|Solid](https://drive.google.com/uc?id=1Ewr9rELNT2w6mrA0E-thJDGG4TyF6ZAJ)](https://drive.google.com/uc?id=1Ewr9rELNT2w6mrA0E-thJDGG4TyF6ZAJ)
+
+        The main modules/services of the PDManager DSS are
+      </para>
+        <list class="bullet">
+          <listItem>
+            <para>
+              Data Proxy. The Data Proxy provides access to PDManager Observations (add link to wiki) and Patient Clinical data. The access is through a local repository or to a remote repository via REST services. The Data Proxy exposes the IDataProxy interface with a number of basic data insert/fetch methdos.
+            </para>
+          </listItem>
+              <listItem>
+              <para> Aggregator</para>
+            </listItem>        
+        </list>
+      </content>
+    </section>
+
+    <section>
+  <title>Aggregation</title>
+  <content>
+    <para>
+      The PDManager has a repository of observations regarding motor and non-motor symptoms related to PD. However, the DSS input requires a post-process of those "raw" observations. In order to fullfil the requirements of the DSS the following aggregation schema is proposed
+
+      [![Aggregation Flow](https://drive.google.com/uc?id=1BNYjS80Iz7uRGAOETfqP8Vs40ua75oyk)](https://drive.google.com/uc?id=1BNYjS80Iz7uRGAOETfqP8Vs40ua75oyk)
+      * 1st Level aggregation. Data are gathered usign the IDataProxy service and aggregated with a linear regression function defined in the aggregation definition JSON file.
+      * Filtering. In this step (if defined) the 1st level aggregation output is thresholded. A number of different threshold types are allowed (ADD WIKI).
+      * 2nd Level Aggregation. The second level aggregation allows the aggregation of the output of the filtering.
+
+      The aggregation definition is a json object with the following schema
+
+
+
+    
+</para>
+</content>
+  </section>
+
+
+    <section>
+      <title>DSS</title>
+      <content>
+        <para>
+        The DSS takes as input "raw" observations aggregated over a period of tim (this functionality is already implemented by the REST API of the PDManager), patient's clinical information and aggregated observations (meta-observations).
+        The DSS is based on the [DEXI](http://kt.ijs.si/MarkoBohanec/dexi.html) model to provide an output given the specific inputs. In order to be able to generalize and adjust the input to a new DEXI model a JSON definition of the DSS is proposed. Using this definition any DEXI input can be fed with the required input from the PDManager repository without the need of changing the code.
+        The DSS Definition is according to the following schema
+
+        ```
+        {
+        "definitions": {
+        "DSSCategoricalValueMapping": {
+        "type": [
+        "object",
+        "null"
+        ],
+        "properties": {
+        "Name": {
+        "type": [
+        "string",
+        "null"
+        ]
+        },
+        "Value": {
+        "type": "integer"
+        },
+        "ValueMeaning": {
+        "type": [
+        "string",
+        "null"
+        ]
+        }
+        },
+        "required": [
+        "Name",
+        "Value",
+        "ValueMeaning"
+        ]
+        },
+        "DSSNumericBin": {
+        "type": [
+        "object",
+        "null"
+        ],
+        "properties": {
+        "MinValue": {
+        "type": "number"
+        },
+        "MaxValue": {
+        "type": "number"
+        },
+        "Value": {
+        "type": "integer"
+        },
+        "ValueMeaning": {
+        "type": [
+        "string",
+        "null"
+        ]
+        }
+        },
+        "required": [
+        "MinValue",
+        "MaxValue",
+        "Value",
+        "ValueMeaning"
+        ]
+        },
+        "DSSNumericMapping": {
+        "description": "NumericMapping is used to scale and translate if required the original numeric value BEFORE are use to map continuous values to specific DEXI discrete input values",
+        "type": [
+        "object",
+        "null"
+        ],
+        "properties": {
+        "Scale": {
+        "type": "number"
+        },
+        "Bias": {
+        "type": "number"
+        }
+        },
+        "required": [
+        "Scale",
+        "Bias"
+        ]
+        },
+        "DSSValueMapping": {
+        "type": [
+        "object",
+        "null"
+        ],
+        "properties": {
+        "Name": {
+        "description": "name",
+        "type": [
+        "string",
+        "null"
+        ]
+        },
+        "Code": {
+        "description": "Code",
+        "type": "string"
+        },
+        "DefaultValue": {
+        "description": "Default Value. This value is used if the attribute is not available in the repository",
+        "type": "integer"
+        },
+        "Source": {
+        "description": "Source of attribute. The possible values are 1) observation and 2) clinical ",
+        "type": "string"
+        },
+        "ValueType": {
+        "description": "Value Type. Possible values are 'numeric' for numeric attributes 'categorical' for categorical attributes",
+        "type": "string"
+        },
+        "CategoryMapping": {
+        "description": "Category mapping for categorical values. It maps the original value to a DEXI model one",
+        "type": [
+        "array",
+        "null"
+        ],
+        "items": {
+        "$ref": "#/definitions/DSSCategoricalValueMapping"
+        }
+        },
+        "NumericBins": {
+        "description": "Numeric bins are use to map continuous values to specific DEXI discrete input values",
+        "type": [
+        "array",
+        "null"
+        ],
+        "items": {
+        "$ref": "#/definitions/DSSNumericBin"
+        }
+        },
+        "NumericMapping": {
+        "$ref": "#/definitions/DSSNumericMapping"
+        },
+        "Numeric": {
+        "type": "boolean"
+        }
+        },
+        "required": [
+        "Name",
+        "Code",
+        "DefaultValue",
+        "Source",
+        "ValueType",
+        "CategoryMapping",
+        "NumericBins",
+        "NumericMapping",
+        "Numeric"
+        ]
+        }
+        },
+        "type": "object",
+        "properties": {
+        "Name": {
+        "description": "DSS name",
+        "type": "string"
+        },
+        "Version": {
+        "description": "Version of the DSS Model",
+        "type": "string"
+        },
+        "DexiFile": {
+        "description": "Dexi File Reference",
+        "type": "string"
+        },
+        "Input": {
+        "description": "Input",
+        "type": [
+        "array",
+        "null"
+        ],
+        "items": {
+        "$ref": "#/definitions/DSSValueMapping"
+        }
+        },
+        "AggregationPeriodDays": {
+        "description": "Aggregation Period Days(Default 30)",
+        "type": "integer"
+        }
+        },
+        "required": [
+        "Name",
+        "Version",
+        "DexiFile",
+        "Input",
+        "AggregationPeriodDays"
+        ]
+        }
+        ```
+      </para>
+
+      </content>
+    </section>
+
+  
+
+    <relatedTopics>
+			<link xlink:href="6813e5dc-dbcc-46fc-98fc-4622e6420213" />
+		</relatedTopics>
+	</developerConceptualDocument>
+</topic>

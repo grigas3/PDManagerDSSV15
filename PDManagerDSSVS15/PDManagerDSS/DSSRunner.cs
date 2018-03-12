@@ -3,7 +3,6 @@ using PDManager.Common.Extensions;
 using PDManager.Common.Interfaces;
 using PDManager.Common.Models;
 using PDManager.DSS.Dexi;
-using PDManager.Models;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -25,11 +24,12 @@ namespace PDManager.DSS
         private const string ObservationType = "observation";
         private const string MetaObservationType = "metaobservation";
         private const string ClinicalInfoType = "clinical";
+        private const string DemographicsType = "demographics";
         /// <summary>
         /// Constructor
         /// </summary>
-        /// <param name="aggregator"></param>
-        /// <param name="dataProxy"></param>
+        /// <param name="aggregator">Aggregator</param>
+        /// <param name="dataProxy">Data proxy</param>
         public DSSRunner(IAggregator aggregator,IDataProxy dataProxy)
         {
             this._dataProxy = dataProxy;
@@ -63,7 +63,8 @@ namespace PDManager.DSS
         /// Get Clinical Information List
         /// The basic info are the Code and the Value
         /// </summary>
-        /// <returns></returns>
+        /// <param name="clinicalInfo">Clinical info String from Patient</param>
+        /// <returns>List of Clinical info <see cref="ClinicalInfo"/></returns>
         public IEnumerable<ClinicalInfo> GetClinicalInfoList(string clinicalInfo)
         {
             if (string.IsNullOrEmpty(clinicalInfo))
@@ -85,13 +86,31 @@ namespace PDManager.DSS
             }
         }
 
+        /// <summary>
+        /// Get Demographics Info List
+        /// </summary>
+        /// <param name="patient"></param>
+        /// <returns>List of ClinicalInfo <see cref="ClinicalInfo"/> </returns>
+        public IEnumerable<ClinicalInfo> GetDemographicsInfoList(PDPatient  patient)
+        {
+
+            List<ClinicalInfo> list = new List<ClinicalInfo>();
+            if (patient.BirthDate.HasValue)
+                list.Add(new ClinicalInfo() {Name="Age", Code = "age", Value = ((int)((DateTime.Now - patient.BirthDate.Value).TotalDays / 365)).ToString() });
+            if (patient.PDAppearance.HasValue)
+                list.Add(new ClinicalInfo() { Name = "Years with PD", Code = "pdy", Value = ((int)((DateTime.Now - patient.PDAppearance.Value).TotalDays / 365)).ToString() });
+            if(!string.IsNullOrEmpty(patient.Gender))
+                list.Add(new ClinicalInfo() { Name = "Gender", Code = "gender", Value = patient.Gender});
+
+            return list;
+        }
 
         /// <summary>
         /// Run using specific values
         /// </summary>        
         /// <param name="configJson">Dss config in json format</param>
-        /// <param name="values"></param>
-        /// <returns></returns>
+        /// <param name="values">Value Dictionary</param>
+        /// <returns>List of DSS Values <see cref="DSSValue"/> </returns>
         public IEnumerable<DSSValue> Run(string configJson, Dictionary<string,string> values)       
         { 
             //Dictionary<string, int> valueMapping = new Dictionary<string, int>();
@@ -107,43 +126,52 @@ namespace PDManager.DSS
         /// <summary>
         /// Evaluate
         /// </summary>
-        /// <param name="model"></param>
-        /// <param name="config"></param>
-        /// <param name="values"></param>
-        /// <returns></returns>
+        /// <param name="model">Dexi Model</param>
+        /// <param name="config">DSS configuration model</param>
+        /// <param name="values">Dictionary values</param>
+        /// <returns>List of DSS Values <see cref="DSSValue"/> </returns>
         private IEnumerable<DSSValue> Evaluate(Model model,DSSConfig config, Dictionary<string, string> values)
         {
 
             foreach (var parameterInfo in config.Input)
             {
                 var key = parameterInfo.Name;
-
-                if (values.ContainsKey(key) && !string.IsNullOrEmpty(values[key]))
+                try
                 {
-
-                    if (parameterInfo.Numeric)
+                    if (values.ContainsKey(key) && !string.IsNullOrEmpty(values[key]))
                     {
 
-                        double v = double.Parse(values[key]);
-                        model.SetInputValue(parameterInfo.Name, parameterInfo.GetNumericMapping(v));
+
+                        if (parameterInfo.Numeric)
+                        {
+
+                            double v = double.Parse(values[key]);
+                            model.SetInputValue(parameterInfo.Name, parameterInfo.GetNumericMapping(v));
+                        }
+                        else
+                        {
+                            int? v = parameterInfo.GetCategoryMapping(values[key]);
+                            if (v.HasValue)
+                                model.SetInputValue(parameterInfo.Name, v.Value);
+                            else
+                                model.SetInputValue(parameterInfo.Name, parameterInfo.DefaultValue);
+
+                        }
+
+
+
                     }
                     else
                     {
-                        int? v = parameterInfo.GetCategoryMapping(values[key]);
-                        if (v.HasValue)
-                            model.SetInputValue(parameterInfo.Name, v.Value);
-                        else
-                            model.SetInputValue(parameterInfo.Name, parameterInfo.DefaultValue);
 
+                        model.SetInputValue(parameterInfo.Name, parameterInfo.DefaultValue);
                     }
 
-
-
                 }
-                else
+                catch(Exception ex)
                 {
 
-                    model.SetInputValue(parameterInfo.Name, parameterInfo.DefaultValue);
+                    Debug.WriteLine($"Error setting param {parameterInfo.Name} with ex {ex.Message}");
                 }
 
             }
@@ -157,7 +185,7 @@ namespace PDManager.DSS
         /// </summary>
         /// <param name="patientId">Patient Id</param>
         /// <param name="configJson">DSS Mapping file</param>
-        /// <returns></returns>
+        /// <returns>List of DSS Values <see cref="DSSValue"/> </returns>
         public async Task<IEnumerable<DSSValue>> GetInputValues(string patientId, string configJson)
         {
 
@@ -171,9 +199,9 @@ namespace PDManager.DSS
         /// <summary>
         /// 
         /// </summary>
-        /// <param name="patientId"></param>
-        /// <param name="config"></param>
-        /// <returns></returns>
+        /// <param name="patientId">Patient Id</param>
+        /// <param name="config">DSS Configuration file</param>
+        /// <returns>List of DSS Values <see cref="DSSValue"/> </returns>
         private async Task<IEnumerable<DSSValue>> GetInputValues(string patientId, DSSConfig config)
         {
             List<DSSValue> values = new List<DSSValue>();
@@ -185,6 +213,11 @@ namespace PDManager.DSS
 
             //Codes from Patient Clinical Info
             List<string> clinicalInfoCodes = new List<string>();
+
+
+            //Codes from Patient Clinical Info
+            List<string> demographicCodes = new List<string>();
+
 
             foreach (var c in config.Input)
             {
@@ -212,6 +245,11 @@ namespace PDManager.DSS
                 {
                     if (!clinicalInfoCodes.Contains(c.Code))
                         clinicalInfoCodes.Add(c.Code);
+                }
+                else if (c.Source.ToLower() == DemographicsType)
+                {
+                    if (!demographicCodes.Contains(c.Code))
+                        demographicCodes.Add(c.Code);
                 }
                 else
                 {
@@ -305,6 +343,31 @@ namespace PDManager.DSS
             }
 
             #endregion Clinical Info
+            #region Demographics Info
+
+            try
+            {
+                var patient = await _dataProxy.Get<PDPatient>(patientId);
+
+                var demographicInfoList = GetDemographicsInfoList(patient);
+                foreach (var c in demographicInfoList)
+                {
+                    var clinicalInfo = config.Input.FirstOrDefault(e => e.Code.ToLower() == c.Code.ToLower());
+
+                    if (clinicalInfo != null)
+                    {
+
+                        values.Add(new DSSValue() { Name = clinicalInfo.Name, Code = clinicalInfo.Code, Value = c.Value });
+
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+
+            #endregion Clinical Info
 
 
             return values;
@@ -316,33 +379,45 @@ namespace PDManager.DSS
         /// </summary>
         /// <param name="patientId">Patient Id</param>
         /// <param name="configJson">DSS Config as Json String file</param>
-        /// <returns></returns>
+        /// <returns>List of DSS Values <see cref="DSSValue"/> </returns>
         public async Task<IEnumerable<DSSValue>> Run(string patientId, string configJson)
         {
-            Dictionary<string, int> valueMapping = new Dictionary<string, int>();
-            var config =DSSConfig.FromString(configJson);
-
-            //TODO: Handle Exceptions
-            var model = LoadModel(config.DexiFile);
-
-            // Set initial values
-            foreach (var c in config.Input)
+            try
             {
-                model.SetInputValue(c.Name, c.DefaultValue);
+                Dictionary<string, int> valueMapping = new Dictionary<string, int>();
+                var config = DSSConfig.FromString(configJson);
+
+                //TODO: Handle Exceptions
+                var model = LoadModel(config.DexiFile);
+
+                // Set initial values
+                foreach (var c in config.Input)
+                {
+                  
+                    model.SetInputValue(c.Name, c.DefaultValue);
+                }
+
+                //Get DSS input values
+                var values = await GetInputValues(patientId, configJson);
+
+                //Assing new values
+                Dictionary<string, string> dict = new Dictionary<string, string>();
+                foreach (var c in values)
+                {
+                    if (!dict.ContainsKey(c.Name))
+                        dict.Add(c.Name, c.Value);
+
+                }
+                return Evaluate(model, config, dict);
             }
-
-            //Get DSS input values
-            var values =await GetInputValues(patientId, configJson);
-
-            //Assing new values
-            Dictionary<string, string> dict = new Dictionary<string, string>();
-            foreach(var c in values)
+            catch(Exception ex)
             {
-                if(!dict.ContainsKey(c.Name))
-                dict.Add(c.Name, c.Value);
-                
+
+                //TODO: Log
+
+                throw; 
+
             }
-            return Evaluate(model, config, dict);
         }
 
       

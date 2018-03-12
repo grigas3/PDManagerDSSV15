@@ -17,13 +17,13 @@ namespace PDManager.Common.Interfaces
         /// <summary>
         /// Get Test UserName
         /// </summary>
-        /// <returns></returns>
+        /// <returns>User Name</returns>
         string GetUserName();
 
         /// <summary>
         /// Get Test Password
         /// </summary>
-        /// <returns></returns>
+        /// <returns>Password</returns>
         string GetPassword();
     }
 }

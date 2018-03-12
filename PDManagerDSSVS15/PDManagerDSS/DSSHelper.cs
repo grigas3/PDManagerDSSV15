@@ -10,7 +10,7 @@ namespace PDManager.DSS
         /// <summary>
         /// UPDRS Mapping
         /// </summary>
-        /// <returns></returns>
+        /// <returns>DSS Categorical Value Mapping</returns>
         public static DSSCategoricalValueMappingList BoolToScalePN()
         {
             // default mapping: UPDRS 0,1-->NORMAL, 2-4-->PROBLEMATIC
@@ -30,7 +30,7 @@ namespace PDManager.DSS
         /// <summary>
         /// UPDRS Mapping
         /// </summary>
-        /// <returns></returns>
+        /// <returns>DSS Categorical Value Mapping</returns>
         public static DSSCategoricalValueMappingList ToScaleSN()
         {
             // default mapping: UPDRS 0,1-->NORMAL, 2-4-->PROBLEMATIC
@@ -54,7 +54,7 @@ namespace PDManager.DSS
         /// <summary>
         /// UPDRS Mapping
         /// </summary>
-        /// <returns></returns>
+        /// <returns>List of DSS numeric bins</returns>
         public static List<DSSNumericBin> UPDRSNumericBin()
         {
             // default mapping: UPDRS 0,1-->NORMAL, 2-4-->PROBLEMATIC
@@ -78,7 +78,7 @@ namespace PDManager.DSS
         /// <summary>
         /// UPDRS Mapping
         /// </summary>
-        /// <returns></returns>
+        /// <returns>List of DSS numeric bins</returns>
         public static List<DSSNumericBin> UPDRSNumericBin2()
         {
             return new List<DSSNumericBin>(){

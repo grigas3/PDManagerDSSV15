@@ -23,7 +23,7 @@ namespace PDManager.Common.Models
         /// <summary>
         /// User or system preferred message type
         /// </summary>
-        public PDMessageType PreferredMessageType { get;  }
+        public MessageType PreferredMessageType { get;  }
 
 
     }

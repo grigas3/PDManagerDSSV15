@@ -33,6 +33,10 @@ namespace PDManager.Common.Models
         public DateTime? PDAppearance { get; set; }
 
 
+        /// <summary>
+        /// Gender (F,M,O)
+        /// </summary>
+        public string Gender { get; set; }
 
       
 

@@ -16,6 +16,8 @@ namespace PDManager.DSS
     public class AlertEvaluationJob: IRecurringJob
     {
 
+        #region Private Fields
+
         private readonly IAlertEvaluator _alertEvaluator;
         private readonly IAlertInputProvider _alertInputProvider;
         private readonly INotificationService _communicationManager;
@@ -24,14 +26,17 @@ namespace PDManager.DSS
         //Logger
         private readonly IGenericLogger _logger;
         private const int MAXPATIENTS = 100;
+        #endregion
+
+
         /// <summary>
         /// Alert Evaluation Job
         /// </summary>
-        /// <param name="alertEvaluator"></param>
-        /// <param name="alertInputProvider"></param>
-        /// <param name="patientProvider"></param>
-        /// <param name="commManager"></param>
-        /// <param name="logger"></param>
+        /// <param name="alertEvaluator">Alert Evaluator</param>
+        /// <param name="alertInputProvider">Alert Input Provider</param>
+        /// <param name="patientProvider">Patient Id Provider</param>
+        /// <param name="commManager">Communication Manager</param>
+        /// <param name="logger">Logger</param>
         public AlertEvaluationJob(IAlertEvaluator alertEvaluator, IAlertInputProvider alertInputProvider,IPatientProvider patientProvider,INotificationService commManager,IGenericLogger logger)
         {
             this._alertEvaluator = alertEvaluator;
@@ -44,6 +49,7 @@ namespace PDManager.DSS
         /// <summary>
         /// Run Job
         /// </summary>
+        /// <returns>True if job succeeds, otherwise false</returns>
         public async Task<bool> Run()
         {
             int take = MAXPATIENTS;
@@ -101,7 +107,7 @@ namespace PDManager.DSS
         /// <summary>
         /// Get Job Id
         /// </summary>
-        /// <returns></returns>
+        /// <returns>Job Id</returns>
         public string GetId()
         {
             return "A8230448-3BAB-4B49-94D2-733975DD43DD";

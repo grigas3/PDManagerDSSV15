@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace PDManager.Service.Notification
+namespace PDManager.Services.Notification
 {
 
     /// <summary>
@@ -22,7 +22,7 @@ namespace PDManager.Service.Notification
         /// <param name="username">User namey</param>
         /// <param name="password">Password</param>        
         /// <param name="accessKey">Acccess Key</param>
-        /// <returns></returns>
+        /// <returns>Result</returns>
         public static string Notify(string from,  string phoneNumber, string message, string username, string password, string accessKey)
         {
             StringBuilder url = new StringBuilder();

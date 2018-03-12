@@ -51,15 +51,14 @@ namespace PDManager.DSS
         /// <summary>
         /// Load From File
         /// </summary>
-        /// <param name="config"></param>
-        /// <returns></returns>
-        public static DSSConfig FromString(string config)
+        /// <param name="file">Config File</param>
+        /// <returns>DSS Config model <see cref="DSSConfig"/> </returns>
+        public static DSSConfig FromString(string file)
         {
             DSSConfig ret = null;
             try
             {
-
-                ret = JsonConvert.DeserializeObject<DSSConfig>(config);
+                ret = JsonConvert.DeserializeObject<DSSConfig>(file);
             }
             catch (Exception ex)
             {

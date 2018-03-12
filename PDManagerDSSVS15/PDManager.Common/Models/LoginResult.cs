@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace PDManager.Common.Results
+namespace PDManager.Common.Models
 {
     /// <summary>
     /// Login Result

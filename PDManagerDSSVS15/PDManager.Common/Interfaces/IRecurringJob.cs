@@ -22,7 +22,7 @@ namespace PDManager.Common.Interfaces
         /// <summary>
         /// Get Job Id
         /// </summary>
-        /// <returns></returns>
+        /// <returns>Id as string</returns>
         string GetId();
     }
 }

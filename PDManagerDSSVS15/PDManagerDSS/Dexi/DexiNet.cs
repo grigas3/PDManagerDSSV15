@@ -19,6 +19,10 @@ namespace PDManager.DSS.Dexi
         private double cumulative = 0.0;
 
 
+        /// <summary>
+        /// Distribution Constructor
+        /// </summary>
+        /// <param name="size">Size</param>
         public Distribution(int size)
 
         {
@@ -26,12 +30,22 @@ namespace PDManager.DSS.Dexi
             Clear();
         }
 
+
+        /// <summary>
+        /// Distribution
+        /// </summary>
+        /// <param name="cum">Cumulative </param>
+        /// <param name="distr">Distribution</param>
         public Distribution(double cum, double[] distr)
         {
             cumulative = cum;
             distribution = distr;
         }
 
+        /// <summary>
+        /// Distribution 
+        /// </summary>
+        /// <param name="distr">Distribution</param>
         public Distribution(Distribution distr)
         {
             distribution = new double[distr.Count];
@@ -262,7 +276,7 @@ namespace PDManager.DSS.Dexi
         /// <summary>
         /// Add distr to current distribution values and cumulative.
         /// </summary>
-        /// <param name="distr"></param>
+        /// <param name="distr">Add Distribution</param>
         public void Add(Distribution distr)
         {
             cumulative += distr.cumulative;
@@ -275,9 +289,9 @@ namespace PDManager.DSS.Dexi
         /// <summary>
         /// Add val to distribution[index], add cum to Cumulative.
         /// </summary>
-        /// <param name="index"></param>
-        /// <param name="val"></param>
-        /// <param name="cum"></param>
+        /// <param name="index">Index</param>
+        /// <param name="val">Value</param>
+        /// <param name="cum">Cumulation</param>
         public void Add(int index, double val, double cum)
         {
             cumulative += cum;
@@ -287,8 +301,8 @@ namespace PDManager.DSS.Dexi
         /// <summary>
         /// Add val to distribution[index], add 1.0 to Cumulative.
         /// </summary>
-        /// <param name="index"></param>
-        /// <param name="val"></param>
+        /// <param name="index">Index</param>
+        /// <param name="val">Value</param>
         public void Add(int index, double val)
         {
             Add(index, val, 1.0);
@@ -297,7 +311,7 @@ namespace PDManager.DSS.Dexi
         /// <summary>
         /// Add 1.0 to distribution[index] and Cumulative.
         /// </summary>
-        /// <param name="index"></param>
+        /// <param name="index">Index</param>
         public void Add(int index)
         {
             Add(index, 1.0, 1.0);
@@ -306,7 +320,7 @@ namespace PDManager.DSS.Dexi
         /// <summary>
         /// Divide all elements and cumulative by by.
         /// </summary>
-        /// <param name="by"></param>
+        /// <param name="by">Divided by</param>
         public void DivBy(double by)
         {
             cumulative /= by;
@@ -319,7 +333,7 @@ namespace PDManager.DSS.Dexi
         /// <summary>
         /// Multiply all elements and cumulative by by.
         /// </summary>
-        /// <param name="by"></param>
+        /// <param name="by">Multiplied by</param>
         public void MulBy(double by)
         {
             cumulative *= by;
@@ -388,6 +402,10 @@ namespace PDManager.DSS.Dexi
             distribution = newdistr;
         }
 
+        /// <summary>
+        /// To string. Distribution to string
+        /// </summary>
+        /// <returns></returns>
         public override string ToString()
         {
             StringBuilder sb = new StringBuilder();
@@ -419,21 +437,40 @@ namespace PDManager.DSS.Dexi
     /// </summary>
     public class Value
     {
+        /// <summary>
+        /// Name
+        /// </summary>
         public string Name { get; set; }
+        /// <summary>
+        /// Ordinal
+        /// </summary>
         public int Ordinal { get; set; }
 
+        /// <summary>
+        /// Value
+        /// </summary>
+        /// <param name="name">Name</param>
+        /// <param name="ordinal">Ordinal</param>
         public Value(string name, int ordinal)
         {
             Name = name;
             Ordinal = ordinal;
         }
 
+        /// <summary>
+        /// Constructor
+        /// </summary>
+        /// <param name="value">Value</param>
         public Value(Value value)
         {
             Name = value.Name;
             Ordinal = value.Ordinal;
         }
 
+        /// <summary>
+        /// To String
+        /// </summary>
+        /// <returns>Value as string with format "{Name}={Ordinal}"</returns>
         public override string ToString()
         {
             return string.Format("{0}={1}", Name, Ordinal);
@@ -452,15 +489,31 @@ namespace PDManager.DSS.Dexi
     /// </summary>
     public class Variable
     {
+
+        /// <summary>
+        /// Variable Name
+        /// </summary>
         public string Name { get; set; }
+
+        /// <summary>
+        /// Variable Value
+        /// </summary>
         public string Value { get; set; }
 
+        /// <summary>
+        /// Constructor
+        /// </summary>
+        /// <param name="name">Name</param>
+        /// <param name="value">Value</param>
         public Variable(string name, string value)
         {
             Name = name;
             Value = value;
         }
-
+        /// <summary>
+        /// Variable
+        /// </summary>
+        /// <param name="hash">Has split with =</param>
         public Variable(string hash)
         {
             string[] str = hash.Split('=');
@@ -486,8 +539,16 @@ namespace PDManager.DSS.Dexi
     /// </summary>
     public class VariableList
     {
+        /// <summary>
+        /// List of variables
+        /// </summary>
         public List<Variable> Variables;
 
+
+        /// <summary>
+        /// Constructor
+        /// </summary>
+        /// <param name="list">List of vairables</param>
         public VariableList(string list)
         {
             string[] hash = null;
@@ -527,6 +588,9 @@ namespace PDManager.DSS.Dexi
             return null;
         }
 
+        /// <summary>
+        /// Variables Count
+        /// </summary>
         public int Count
         {
             get { return Variables.Count; }
@@ -553,10 +617,23 @@ namespace PDManager.DSS.Dexi
     /// </summary>
     public class ScaleValue
     {
+        /// <summary>
+        /// Name
+        /// </summary>
         public string Name { get; set; }
+        /// <summary>
+        /// Description
+        /// </summary>
         public string Description { get; set; }
+        /// <summary>
+        /// Group
+        /// </summary>
         public string Group { get; set; }
 
+        /// <summary>
+        /// Scale Value Constructor
+        /// </summary>
+        /// <param name="scl">Xml</param>
         public ScaleValue(XmlNode scl)
         {
             if (!scl.HasChildNodes)
@@ -600,6 +677,10 @@ namespace PDManager.DSS.Dexi
     {
         private List<ScaleValue> ScaleValues;
 
+        /// <summary>
+        /// Scale
+        /// </summary>
+        /// <param name="scl">Xml</param>
         public Scale(XmlNode scl)
         {
             ScaleValues = new List<ScaleValue>();
@@ -648,17 +729,30 @@ namespace PDManager.DSS.Dexi
             return value;
         }
 
+        /// <summary>
+        /// Count of Scale Values
+        /// </summary>
+
         public int Count
         {
             get { return ScaleValues.Count; }
         }
 
+        /// <summary>
+        /// Scale Value Accessor
+        /// </summary>
+        /// <param name="index"></param>
+        /// <returns></returns>
         public ScaleValue this[int index]
         {
             get { return ScaleValues[index]; }
             set { ScaleValues[index] = value; }
         }
 
+        /// <summary>
+        /// Write to stream
+        /// </summary>
+        /// <param name="writer">Output stream</param>
         public void Write(StreamWriter writer)
         {
             writer.WriteLine("Scale:");
@@ -680,23 +774,54 @@ namespace PDManager.DSS.Dexi
     /// </summary>
     public class Rule
     {
+        /// <summary>
+        /// Low
+        /// </summary>
         public int Low { get; set; }
+        /// <summary>
+        /// High
+        /// </summary>
         public int High { get; set; }
+        /// <summary>
+        /// Entered
+        /// </summary>
         public bool Entered { get; set; }
+        /// <summary>
+        /// Explicit
+        /// </summary>
         public bool Explicit { get; set; }
 
+        /// <summary>
+        /// Rule Constructor
+        /// </summary>
+        /// <param name="low">Low</param>
         public Rule(int low) : this(low, low, true)
         {
         }
 
+        /// <summary>
+        /// Rule Constructor
+        /// </summary>
+        /// <param name="low">Low</param>
+        /// <param name="high">High</param>
         public Rule(int low, int high) : this(low, high, true)
         {
         }
-
+        /// <summary>
+        /// Rule Constructor
+        /// </summary>
+        /// <param name="low">Low</param>
+        /// <param name="entered">Entered. explicitly entered by a DEXi user</param>
         public Rule(int low, bool entered) : this(low, low, entered)
         {
         }
 
+        /// <summary>
+        /// Rule Constructor
+        /// </summary>
+        /// <param name="low">Low</param>
+        /// <param name="high">High</param>
+        /// <param name="entered">Entered. explicitly entered by a DEXi user</param>
         public Rule(int low, int high, bool entered)
         {
             if (low < 0)
@@ -761,23 +886,60 @@ namespace PDManager.DSS.Dexi
         private Scale scale = null;
         private Attribute link = null;
 
+        /// <summary>
+        /// Attribute Name
+        /// </summary>
         public string Name { get; set; }
+        /// <summary>
+        /// Attribute Description
+        /// </summary>
         public string Description { get; set; }
+
+        /// <summary>
+        /// Completeness
+        /// </summary>
         public bool Completeness { get; set; }
+        /// <summary>
+        /// Explicitness
+        /// </summary>
         public bool Explicitness { get; set; }
+        /// <summary>
+        /// Level
+        /// </summary>
         public int Level { get; set; }
+        /// <summary>
+        /// List of attributes
+        /// </summary>
         public List<Attribute> Attributes { get { return attributes; } }
+        /// <summary>
+        /// Lin Attribute
+        /// </summary>
         public Attribute Link { get { return link; } }
+        /// <summary>
+        /// Scale
+        /// </summary>
         public Scale Scale { get { return scale; } }
+        /// <summary>
+        /// Distribution
+        /// </summary>
         public Distribution Values { get; set; }
 
+        /// <summary>
+        /// Scale Size
+        /// </summary>
         public int ScaleSize
         {
             get { return (scale == null) ? 0 : scale.Count; }
         }
 
+        /// <summary>
+        /// Inputs
+        /// </summary>
         public int Inputs { get { return attributes.Count; } }
 
+        /// <summary>
+        /// Attribute Count
+        /// </summary>
         public int AttributeCount
         {
             get
@@ -793,6 +955,9 @@ namespace PDManager.DSS.Dexi
             }
         }
 
+        /// <summary>
+        /// Rule Count
+        /// </summary>
         public int RuleCount
         {
             get
@@ -808,6 +973,11 @@ namespace PDManager.DSS.Dexi
             }
         }
 
+        /// <summary>
+        /// Attribute
+        /// </summary>
+        /// <param name="att">XmlNode</param>
+        /// <param name="level">level</param>
         public Attribute(XmlNode att, int level)
         {
             attributes = new List<Attribute>();
@@ -966,8 +1136,8 @@ namespace PDManager.DSS.Dexi
         /// <summary>
         /// Checks whether or not this attribute affects other attributes.
         /// </summary>
-        /// <param name="att"></param>
-        /// <returns></returns>
+        /// <param name="att">Attribute</param>
+        /// <returns>True/False</returns>
         public bool Affects(Attribute att)
         {
             return att.Depends(this);
@@ -976,8 +1146,8 @@ namespace PDManager.DSS.Dexi
         /// <summary>
         /// Checks whether or not this attribute depends on other attributes.
         /// </summary>
-        /// <param name="att"></param>
-        /// <returns></returns>
+        /// <param name="att">Attribute</param>
+        /// <returns>True/False</returns>
         public bool Depends(Attribute att)
         {
             foreach (Attribute a in attributes)
@@ -993,9 +1163,9 @@ namespace PDManager.DSS.Dexi
         /// <summary>
         /// Find an attribute from list that is a candidate for linking with attribute named name.
         /// </summary>
-        /// <param name="name"></param>
-        /// <param name="list"></param>
-        /// <returns></returns>
+        /// <param name="name">Name of attribute to find</param>
+        /// <param name="list">List of attributes</param>
+        /// <returns>Attribute</returns>
         private Attribute FindLinkAttribute(string name, List<Attribute> list)
         {
             Attribute agg = null;
@@ -1029,7 +1199,7 @@ namespace PDManager.DSS.Dexi
         /// <summary>
         /// Try to link this.attribute and all its descendants with candidate attributes in a list.
         /// </summary>
-        /// <param name="list"></param>
+        /// <param name="list">List of attributes</param>
         public void LinkAttribute(List<Attribute> list)
         {
             link = null;
@@ -1071,8 +1241,8 @@ namespace PDManager.DSS.Dexi
         /// <summary>
         /// Converts an integer array of function argument values to rule index.
         /// </summary>
-        /// <param name="args"></param>
-        /// <returns></returns>
+        /// <param name="args">List of args</param>
+        /// <returns>index</returns>
         public int ArgsToIndex(int[] args)
         {
             int index = 0;
@@ -1090,8 +1260,8 @@ namespace PDManager.DSS.Dexi
         /// <summary>
         /// Converts rule index to corresponding function argument values.
         /// </summary>
-        /// <param name="index"></param>
-        /// <returns></returns>
+        /// <param name="index">Index</param>
+        /// <returns>index array</returns>
         public int[] IndexToArgs(int index)
         {
             int[] result = new int[AttributeCount];
@@ -1106,10 +1276,10 @@ namespace PDManager.DSS.Dexi
         }
 
         /// <summary>
-        /// alculate function value with respect to args[].
+        /// Calculate function value with respect to args[].
         /// </summary>
-        /// <param name="args"></param>
-        /// <returns></returns>
+        /// <param name="args">List of args</param>
+        /// <returns>Function Value</returns>
         public Rule FunctionValue(int[] args)
         {
             return function[ArgsToIndex(args)];
@@ -1173,8 +1343,8 @@ namespace PDManager.DSS.Dexi
         /// assigned to this.attribute's descendants' distributions.
         /// </summary>
         /// <param name="args">Function arguments - ordinal numbers.</param>
-        /// <param name="evalType"></param>
-        /// <returns></returns>
+        /// <param name="evalType">Evaluation type</param>
+        /// <returns>Distribution value</returns>
         protected double DistributionValue(int[] args, Model.Evaluation evalType)
         {
             double value = 1.0;
@@ -1207,7 +1377,7 @@ namespace PDManager.DSS.Dexi
         /// distributions of its descendants in the model. This is the main
         /// evaluation method for an individual attribute.
         /// </summary>
-        /// <param name="evalType"></param>
+        /// <param name="evalType">Evaluation Type</param>
         protected void CalculateDistr(Model.Evaluation evalType)
         {
             foreach (Attribute att in attributes)
@@ -1288,7 +1458,7 @@ namespace PDManager.DSS.Dexi
         /// <summary>
         /// Set attribute value distribution to a single integer value.
         /// </summary>
-        /// <param name="value"></param>
+        /// <param name="value">Input value</param>
         public void SetValue(int value)
         {
             Values.Single = value;
@@ -1353,7 +1523,7 @@ namespace PDManager.DSS.Dexi
         /// <summary>
         /// Set Values to distr.
         /// </summary>
-        /// <param name="distr"></param>
+        /// <param name="distr">Distribution</param>
         public void SetDistr(Distribution distr)
         {
             if (scale == null)
@@ -1370,7 +1540,7 @@ namespace PDManager.DSS.Dexi
         /// <summary>
         /// Set Values to distr.
         /// </summary>
-        /// <param name="distr"></param>
+        /// <param name="distr">Distribution</param>
         public void SetDistr(double[] distr)
         {
             if (scale == null)
@@ -1387,8 +1557,8 @@ namespace PDManager.DSS.Dexi
         /// <summary>
         /// Get the name of index-th value of the scale attached to this attribute.
         /// </summary>
-        /// <param name="index"></param>
-        /// <returns></returns>
+        /// <param name="index">Index</param>
+        /// <returns>Scale as string</returns>
         public string ScaleValue(int index)
         {
             return scale.FindValue(index).Name;
@@ -1397,8 +1567,8 @@ namespace PDManager.DSS.Dexi
         /// <summary>
         /// Get index-th rule of the function attached to this attribute.
         /// </summary>
-        /// <param name="index"></param>
-        /// <returns></returns>
+        /// <param name="index">Index</param>
+        /// <returns>Rule</returns>
         public Rule Rule(int index)
         {
             return function[index];
@@ -1468,6 +1638,11 @@ namespace PDManager.DSS.Dexi
             return CompareArgs(IndexToArgs(r1), IndexToArgs(r2));
         }
 
+        /// <summary>
+        /// Rule Bounds
+        /// </summary>
+        /// <param name="x">input </param>
+        /// <returns>Rule applied</returns>
         public Rule RuleBounds(int x)
         {
             Rule result = new Rule(0, ScaleSize - 1, Rule(x).Entered);
@@ -1503,9 +1678,9 @@ namespace PDManager.DSS.Dexi
         /// Tests whether rule x is consistent with respect to bounds.
         /// Also, all bounds are checked to lie within the scale range.
         /// </summary>
-        /// <param name="x"></param>
-        /// <param name="bounds"></param>
-        /// <returns></returns>
+        /// <param name="x">Input value</param>
+        /// <param name="bounds">Rule</param>
+        /// <returns>True/False</returns>
         public bool RuleIsConsistent(int x, Rule bounds)
         {
             Rule r = Rule(x);
@@ -1522,8 +1697,8 @@ namespace PDManager.DSS.Dexi
         /// <summary>
         /// Tests whether rule x is consistent according to the dominance principle.
         /// </summary>
-        /// <param name="x"></param>
-        /// <returns></returns>
+        /// <param name="x">Input value</param>
+        /// <returns>True/false</returns>
         public bool RuleIsConsistent(int x)
         {
             return RuleIsConsistent(x, RuleBounds(x));
@@ -1532,7 +1707,7 @@ namespace PDManager.DSS.Dexi
         /// <summary>
         /// Tests whether the entire function is consistent.
         /// </summary>
-        /// <returns></returns>
+        /// <returns>True of false</returns>
         public bool FunctionIsConsistent()
         {
             for (int r = 0; r < RuleCount; r++)
@@ -1604,10 +1779,16 @@ namespace PDManager.DSS.Dexi
             }
         }
 
+        /// <summary>
+        /// Values as String
+        /// </summary>
         public string ValuesString
         {
             get
             {
+
+                if (Values == null)
+                    return "??";
                 StringBuilder sb = new StringBuilder();
                 bool empty = true;
                 if (Values.Cumulative != 1.0)
@@ -1631,6 +1812,10 @@ namespace PDManager.DSS.Dexi
             }
         }
 
+        /// <summary>
+        /// Write to stream
+        /// </summary>
+        /// <param name="writer">Input Stream</param>
         public void Write(StreamWriter writer)
         {
             writer.WriteLine("Attribute:");
@@ -1671,6 +1856,11 @@ namespace PDManager.DSS.Dexi
         /// </summary>
         public enum Evaluation { SET, PROB, FUZZY };
 
+        /// <summary>
+        /// Format Double number
+        /// </summary>
+        /// <param name="dbl"></param>
+        /// <returns></returns>
         public static string FormatDouble(double dbl)
         {
             return dbl.ToString("F2").Replace(',', '.').Trim('0').Trim('.');
@@ -1740,10 +1930,19 @@ namespace PDManager.DSS.Dexi
             ModelSetup();
         }
 
+        /// <summary>
+        /// Model
+        /// </summary>
+        /// <param name="xml">Xml input</param>
         public Model(string xml) : this(xml, true)
         {
         }
 
+        /// <summary>
+        /// Return all attributes as string
+        /// </summary>
+        /// <param name="list">Input attribute list</param>
+        /// <returns>List of attributes</returns>
         public string AttributesToString(List<Attribute> list)
         {
             StringBuilder sb = new StringBuilder();
@@ -1759,7 +1958,7 @@ namespace PDManager.DSS.Dexi
         /// <summary>
         /// Links attributes after loading the model.
         /// </summary>
-        /// <param name="list"></param>
+        /// <param name="list">Input attribute list</param>
         private void LinkAttributes(List<Attribute> list)
         {
             for (int i = 0; i < list.Count; i++)
@@ -1787,7 +1986,7 @@ namespace PDManager.DSS.Dexi
         /// <summary>
         /// Sets all attributes's Values in the list to null.
         /// </summary>
-        /// <param name="list"></param>
+        /// <param name="list">Input attribute list</param>
         protected void ClearAttributeValues(List<Attribute> list)
         {
             foreach (Attribute att in list)
@@ -1823,7 +2022,7 @@ namespace PDManager.DSS.Dexi
         /// <summary>
         /// Set the values of input attributes.
         /// </summary>
-        /// <param name="variables"></param>
+        /// <param name="variables">Variables as string</param>
         public void SetInputValuesByNames(string variables)
         {
             VariableList variableList = new VariableList(variables);
@@ -1843,7 +2042,7 @@ namespace PDManager.DSS.Dexi
         /// <summary>
         /// Set the values of input attributes.
         /// </summary>
-        /// <param name="values"></param>
+        /// <param name="values">Array of values</param>
         public void SetInputValues(string[] values)
         {
             if (values.Length != basic.Count)
@@ -1861,7 +2060,7 @@ namespace PDManager.DSS.Dexi
         /// <summary>
         /// Set the values of input attributes.
         /// </summary>
-        /// <param name="values"></param>
+        /// <param name="values">Array of values</param>
         public void SetInputValues(int[] values)
         {
             if (values.Length != basic.Count)
@@ -1879,10 +2078,10 @@ namespace PDManager.DSS.Dexi
         /// <summary>
         /// Set input value of attribute given by name.
         /// </summary>
-        /// <param name="name"></param>
-        /// <param name="value"></param>
-        /// <param name="mem"></param>
-        /// <param name="clear"></param>
+        /// <param name="name">Name</param>
+        /// <param name="value">Value</param>
+        /// <param name="mem">Memory</param>
+        /// <param name="clear">Clear</param>
         public void SetInputValue(string name, int value, double mem = 1.0, bool clear = true)
         {
             Attribute att = FindAttribute(name, basic);
@@ -1896,10 +2095,10 @@ namespace PDManager.DSS.Dexi
         /// <summary>
         /// Set input value of attribute given by name.
         /// </summary>
-        /// <param name="name"></param>
-        /// <param name="value"></param>
-        /// <param name="mem"></param>
-        /// <param name="clear"></param>
+        /// <param name="name">Name</param>
+        /// <param name="value">Value</param>
+        /// <param name="mem">Memory</param>
+        /// <param name="clear">Clear</param>
         public void SetInputValue(string name, string value, double mem = 1.0, bool clear = true)
         {
             Attribute att = FindAttribute(name, basic);
@@ -1913,10 +2112,10 @@ namespace PDManager.DSS.Dexi
         /// <summary>
         /// Set input value of index-th attribute.
         /// </summary>
-        /// <param name="index"></param>
-        /// <param name="value"></param>
-        /// <param name="mem"></param>
-        /// <param name="clear"></param>
+        /// <param name="index">Index</param>
+        /// <param name="value">Value</param>
+        /// <param name="mem">Memory</param>
+        /// <param name="clear">Clear</param>
         public void SetInputValue(int index, int value, double mem = 1.0, bool clear = true)
         {
             Attribute att = basic[index];
@@ -1926,10 +2125,10 @@ namespace PDManager.DSS.Dexi
         /// <summary>
         /// Set input value of index-th attribute.
         /// </summary>
-        /// <param name="index"></param>
-        /// <param name="value"></param>
-        /// <param name="mem"></param>
-        /// <param name="clear"></param>
+        /// <param name="index">Index</param>
+        /// <param name="value">Value</param>
+        /// <param name="mem">Memory</param>
+        /// <param name="clear">Clear</param>
         public void SetInputValue(int index, string value, double mem = 1.0, bool clear = true)
         {
             Attribute att = basic[index];
@@ -1939,8 +2138,8 @@ namespace PDManager.DSS.Dexi
         /// <summary>
         /// Set input value of attribute name to distribution.
         /// </summary>
-        /// <param name="name"></param>
-        /// <param name="distr"></param>
+        /// <param name="name">Name</param>
+        /// <param name="distr">Distribution Object</param>
         public void SetInputValue(string name, Distribution distr)
         {
             Attribute att = FindAttribute(name, basic);
@@ -1954,8 +2153,8 @@ namespace PDManager.DSS.Dexi
         /// <summary>
         /// Set input value of attribute name to distribution.
         /// </summary>
-        /// <param name="name"></param>
-        /// <param name="distr"></param>
+        /// <param name="name">Name</param>
+        /// <param name="distr">Distribution Object</param>
         public void SetInputValue(string name, double[] distr)
         {
             Attribute att = FindAttribute(name, basic);
@@ -1969,8 +2168,8 @@ namespace PDManager.DSS.Dexi
         /// <summary>
         /// Set input value of index-th attribute name to distribution.
         /// </summary>
-        /// <param name="index"></param>
-        /// <param name="distr"></param>
+        /// <param name="index">Index</param>
+        /// <param name="distr">Distribution</param>
         public void SetInputValue(int index, Distribution distr)
         {
             Attribute att = basic[index];
@@ -1980,8 +2179,8 @@ namespace PDManager.DSS.Dexi
         /// <summary>
         /// Set input value of index-th attribute name to distribution.
         /// </summary>
-        /// <param name="index"></param>
-        /// <param name="distr"></param>
+        /// <param name="index">Index</param>
+        /// <param name="distr">Distribution</param>
         public void SetInputValue(int index, double[] distr)
         {
             Attribute att = basic[index];
@@ -2032,8 +2231,8 @@ namespace PDManager.DSS.Dexi
         /// <summary>
         /// Get the value distribution of the index-th aggregate (output) attribute.
         /// </summary>
-        /// <param name="index"></param>
-        /// <returns></returns>
+        /// <param name="index">Index</param>
+        /// <returns>Distribution</returns>
         public Distribution OutputDistr(int index)
         {
             return aggregate[index].Values;
@@ -2043,7 +2242,7 @@ namespace PDManager.DSS.Dexi
         /// Get the value distribution an aggregate (output) attribute.
         /// </summary>
         /// <param name="name">Attribute name.</param>
-        /// <returns></returns>
+        /// <returns>Distribution</returns>
         public Distribution OutputDistr(string name)
         {
             Attribute att = FindAttribute(name, aggregate);
@@ -2057,8 +2256,8 @@ namespace PDManager.DSS.Dexi
         /// <summary>
         /// Get value distribution of index-th output attribute.
         /// </summary>
-        /// <param name="index"></param>
-        /// <returns></returns>
+        /// <param name="index">Index</param>
+        /// <returns>Distribution</returns>
         public string OutputValuesString(int index)
         {
             return aggregate[index].ValuesString;
@@ -2068,7 +2267,7 @@ namespace PDManager.DSS.Dexi
         /// Get value distribution of some output attribute.
         /// </summary>
         /// <param name="name">Attribute name.</param>
-        /// <returns></returns>
+        /// <returns>Output as string</returns>
         public string OutputValuesString(string name)
         {
             Attribute att = FindAttribute(name, aggregate);
@@ -2098,7 +2297,7 @@ namespace PDManager.DSS.Dexi
         /// Find attribute in the model by name.
         /// </summary>
         /// <param name="name">Attribute name.</param>
-        /// <returns></returns>
+        /// <returns>Attribute</returns>
         public Attribute FindAttribute(string name)
         {
             return FindAttribute(name, attributes);
@@ -2107,9 +2306,9 @@ namespace PDManager.DSS.Dexi
         /// <summary>
         /// Find attribute by name in list.
         /// </summary>
-        /// <param name="name"></param>
-        /// <param name="list"></param>
-        /// <returns></returns>
+        /// <param name="name">Name of attribute to find</param>
+        /// <param name="list">List of all attributes</param>
+        /// <returns>Found attribute, otherwise null</returns>
         public Attribute FindAttribute(string name, List<Attribute> list)
         {
             foreach (Attribute att in list)
@@ -2160,8 +2359,8 @@ namespace PDManager.DSS.Dexi
         /// <summary>
         /// Get a string array of names of attributes in attlist.
         /// </summary>
-        /// <param name="list"></param>
-        /// <returns></returns>
+        /// <param name="list">List of attributes</param>
+        /// <returns>List of attribute names</returns>
         public string[] ListAttributes(List<Attribute> list)
         {
             string[] result = new string[list.Count];
@@ -2191,8 +2390,8 @@ namespace PDManager.DSS.Dexi
         /// <summary>
         /// Get a tab-delimited string of attribute names.
         /// </summary>
-        /// <param name="list"></param>
-        /// <returns></returns>
+        /// <param name="list">List of attributes</param>
+        /// <returns>Tab delimited attribute names</returns>
         public string TabbedAttributes(List<Attribute> list)
         {
             StringBuilder sb = new StringBuilder();
@@ -2280,6 +2479,10 @@ namespace PDManager.DSS.Dexi
             }
         }
 
+        /// <summary>
+        /// Write to file
+        /// </summary>
+        /// <param name="writer">Stream Writer</param>
         public void Write(StreamWriter writer)
         {
             writer.WriteLine("Model:");

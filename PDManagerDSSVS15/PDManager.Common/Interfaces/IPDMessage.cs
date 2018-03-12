@@ -33,9 +33,9 @@ namespace PDManager.Common.Interfaces
 
 
         /// <summary>
-        /// 
+        /// Message Type
         /// </summary>
-        PDMessageType MessageType { get; set; }
+        MessageType MessageType { get; set; }
 
 
         /// <summary>

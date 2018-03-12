@@ -1,9 +1,6 @@
 ﻿using Newtonsoft.Json;
 using PDManager.Common.Models;
-using PDManager.Models;
-using System;
 using System.Collections.Generic;
-using System.Text;
 
 namespace PDManager.Common.Extensions
 {
@@ -15,10 +12,11 @@ namespace PDManager.Common.Extensions
 
         #region Helpers
         /// <summary>
-        /// Get Clinical Information List
+        /// Get Clinical Information List. This is an extension of the PDPatient class.
         /// The basic info are the Code and the Value
         /// </summary>
-        /// <returns></returns>
+        /// <param name="patient">PDPatient</param>
+        /// <returns>List of Clinical info <see cref="ClinicalInfo"/> </returns>
         public static IEnumerable<ClinicalInfo> GetClinicalInfoList(this PDPatient patient)
         {
             if (string.IsNullOrEmpty(patient.ClinicalInfo))
